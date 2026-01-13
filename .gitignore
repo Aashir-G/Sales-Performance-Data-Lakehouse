@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Data (don’t upload raw datasets)
+data/raw/
+data/processed/
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Logs
+*.log
