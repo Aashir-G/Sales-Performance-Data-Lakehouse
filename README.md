@@ -1,203 +1,147 @@
-```md
-# 📊 Sales Performance Data Lakehouse
+# Sales Performance Data Lakehouse 📊
 
-An end-to-end analytics pipeline that transforms raw business data into executive-level dashboards using a modern **Data Lakehouse architecture**.
+An end-to-end analytics project that simulates an enterprise-grade **Lakehouse architecture** using Databricks + Power BI.
+It ingests raw sales data, transforms it through Bronze → Silver → Gold layers, and delivers clean KPI-driven dashboards for business decision making.
 
-Pipeline:
-```
-
-Excel / CSV → Python → Databricks (Delta Lake) → Power BI
-
-```
-
-This project shows how messy operational data is engineered into scalable, analytics-ready tables and consumed by BI tools.
+![Databricks](https://img.shields.io/badge/Databricks-FF3621?logo=databricks\&logoColor=white)
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?logo=powerbi\&logoColor=black)
+![PySpark](https://img.shields.io/badge/PySpark-E25A1C?logo=apache-spark\&logoColor=white)
+![Lakehouse](https://img.shields.io/badge/Lakehouse-Architecture-4B8BBE)
 
 ---
 
-## 🏗️ Architecture
+## Features ✨
+
+### 🏗️ Medallion Architecture
+
+Implements a professional Lakehouse pipeline:
+
+* **Bronze Layer** – Raw ingested data
+* **Silver Layer** – Cleaned and structured data
+* **Gold Layer** – Aggregated KPIs and analytics tables
 
 ```
+UI Upload
+→ Silver Table
+→ Bronze Table
+→ Silver Table (refined)
+→ Gold Tables (analytics ready)
+```
 
-Raw Excel / CSV
-↓
-Python (Cleaning + Feature Engineering)
-↓
-Databricks Lakehouse
-├─ Bronze Layer  → Raw ingestion
-├─ Silver Layer  → Cleaned & typed data
-└─ Gold Layer    → Aggregated KPIs for BI
-↓
-Power BI Dashboard (Executive Overview)
+Gold tables:
 
+* `gold_kpis`
+* `gold_product_perf`
+* `gold_region_perf`
+
+---
+
+### 📈 Revenue Analytics
+
+* Year-over-year revenue trends
+* Channel-wise revenue distribution
+* Business-ready KPIs for leadership reporting
+
+---
+
+### 🧮 Business Metrics
+
+Calculated metrics include:
+
+* Total Revenue
+* Average Order Value (AOV)
+* Order Count
+* Revenue by Channel
+* Revenue by Region
+* Product Performance
+
+---
+
+### 📊 Power BI Dashboard
+
+Interactive dashboard features:
+
+* Revenue trend visualization
+* Channel performance bar charts
+* Date range filtering (Between slicer)
+* Enterprise-style layout
+* Clean executive reporting design
+
+---
+
+### ⚙️ Enterprise-Style Data Pipeline
+
+* PySpark transformations
+* Delta tables
+* SQL Warehouse / Cluster integration
+* Power BI Direct connection via Databricks
+
+This mirrors how real companies structure their analytics stacks.
+
+---
+
+## Architecture Overview 🏛️
+
+```
+CSV Upload
+   ↓
+Databricks FileStore (DBFS)
+   ↓
+Bronze Table (Raw)
+   ↓
+Silver Table (Cleaned)
+   ↓
+Gold Tables (Aggregations)
+   ↓
+Power BI Dashboard
 ```
 
 ---
 
-## 🧰 Tech Stack
-
-| Tool | Purpose |
-|------|-------|
-| Python (Pandas) | Data cleaning and preprocessing |
-| Databricks | Distributed compute + Lakehouse platform |
-| PySpark | Transformations & aggregations |
-| Delta Lake | Reliable table storage (ACID) |
-| Power BI | Data visualization & dashboards |
-| Excel | Raw data source |
-| GitHub | Version control |
-
----
-
-## 📁 Project Structure
+## File Structure 📁
 
 ```
-
 Sales-Performance-Data-Lakehouse/
-│
 ├── data/
-│   ├── raw/                 # Generated raw Excel/CSV (git ignored)
-│   ├── processed/           # Cleaned CSV output (git ignored)
-│   └── sample/              # Small sample dataset for demo
-│
-├── notebooks/
-│   └── lakehouse_pipeline.py   # Bronze → Silver → Gold pipeline
-│
-├── src/
-│   ├── generate_raw_excel.py   # Fake dataset generator
-│   ├── clean_excel_to_csv.py   # Cleaning + feature engineering
-│   └── config.py
-│
-├── screenshots/
-│   ├── dashboard.png
-│   └── databricks_tables.png
-│
-├── requirements.txt
-└── README.md
-
-````
-
----
-
-## 🔄 Data Layers
-
-### 🥉 Bronze Layer – Raw Ingestion
-Stores unmodified data for lineage and recovery.
-
-```python
-df_bronze = spark.table("workspace.default.silver_sales")
-df_bronze.write.format("delta").saveAsTable("bronze_sales")
-````
-
----
-
-### 🥈 Silver Layer – Curated Data
-
-* Type casting
-* Null handling
-* Data quality filters
-* Standardized schema
-
-```python
-df_silver.write.format("delta").saveAsTable("silver_sales_curated")
+│   └── processed/
+│       └── silver_sales.csv
+├── databricks/
+│   └── lakehouse_pipeline.py   # Full PySpark pipeline
+├── powerbi/
+│   └── sales_dashboard.pbix    # Power BI report
+├── README.md
 ```
 
 ---
 
-### 🥇 Gold Layer – Analytics Tables
+## Technologies Used 🛠️
 
-| Table             | Description                   |
-| ----------------- | ----------------------------- |
-| gold_kpis         | Daily KPIs by channel         |
-| gold_product_perf | Product-level performance     |
-| gold_region_perf  | Region-level revenue & profit |
-
-Only these tables are used by Power BI.
-
----
-
-## 📊 KPIs Implemented
-
-* Net Revenue
-* Profit (estimated with COGS)
-* ROAS (Return on Ad Spend)
-* AOV (Average Order Value)
-* Return Rate
-* Orders
-* Unique Customers
+* **Databricks** – Distributed processing & Lakehouse storage
+* **PySpark** – Data transformations and aggregations
+* **Delta Lake** – Transactional tables
+* **Power BI** – Visualization & analytics
+* **SQL Warehouse** – BI connectivity
+* **DBFS** – File ingestion
 
 ---
 
-## 📈 Power BI Dashboard
+## Setup & Execution 🚀
 
-Page: **Executive Overview**
+### 1. Upload Data
 
-Contains:
+Upload the CSV file:
 
-* KPI Cards:
-
-  * Net Revenue
-  * Profit
-  * ROAS
-  * Orders
-
-* Visuals:
-
-  * Revenue Trend (Line Chart)
-  * Revenue by Channel (Column Chart)
-  * Top Products (Bar Chart)
-  * Revenue by Region (Bar Chart)
-
-* Slicers:
-
-  * Date range
-  * Channel
-  * Region
-
----
-
-## 🖼️ Dashboard Preview
-
-```md
-![alt text](image-1.png)
+```
+/FileStore/tables/silver_sales.csv
 ```
 
 ---
 
-## 🗃️ Databricks Tables Preview
+### 2. Run the Pipeline in Databricks
 
-```md
-![alt text](image.png)
-```
+Create a new Python notebook and paste the pipeline code.
 
----
-
-## 🚀 Run Locally (Python)
-
-```bash
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-
-# Generate raw dataset
-python -m src.generate_raw_excel
-
-# Clean Excel → CSV
-python -m src.clean_excel_to_csv
-```
-
----
-
-## ☁️ Run in Databricks
-
-1. Upload cleaned CSV using:
-
-   * `Create or modify table from file upload`
-2. Run the notebook:
-
-```
-notebooks/lakehouse_pipeline.py
-```
-
-3. Verify tables:
+Attach a cluster and run:
 
 ```python
 spark.sql("SHOW TABLES").show()
@@ -207,47 +151,92 @@ You should see:
 
 ```
 bronze_sales
-silver_sales_curated
+silver_sales
 gold_kpis
 gold_product_perf
 gold_region_perf
 ```
 
----
+Preview:
 
-## 🔌 Power BI Connection
-
-Power BI → Get Data → **Azure Databricks**
-
-Use:
-
-* Server hostname
-* HTTP Path
-* Personal Access Token
-
-Load:
-
-* gold_kpis
-* gold_product_perf
-* gold_region_perf
+```python
+display(spark.table("gold_kpis"))
+display(spark.table("gold_product_perf"))
+display(spark.table("gold_region_perf"))
+```
 
 ---
 
-## 📌 Notes
+### 3. Connect Power BI
 
-* Only Gold tables are exposed to BI tools
-* Bronze & Silver layers stay internal to Databricks
-* Delta Lake ensures schema consistency and reliability
-* Architecture matches real enterprise analytics pipelines
+In Power BI:
+
+1. Get Data → Azure → Azure Databricks
+2. Enter:
+
+   * Server Hostname
+   * HTTP Path
+   * Authentication: Personal Access Token
+3. Select:
+
+   * `gold_kpis`
+   * `gold_product_perf`
+   * `gold_region_perf`
 
 ---
 
-## 🔥 Project Outcome
+## Sample Insights 📊
 
-This project implements a full **Lakehouse analytics workflow** with:
+| KPI                  | Description                    |
+| -------------------- | ------------------------------ |
+| Revenue Trend        | Tracks revenue over time       |
+| Channel Revenue      | Breakdown by marketing channel |
+| Product Performance  | Top-selling items              |
+| Regional Performance | Strongest geographic markets   |
 
-* Raw data ingestion
-* Structured transformation layers
-* Production-style KPI tables
-* Live BI dashboard integration
+---
 
+## Why This Project Matters 🎯
+
+This project demonstrates:
+
+* Real enterprise analytics architecture
+* Data engineering + BI integration
+* Production-style pipelines
+* Recruiter-ready portfolio quality
+
+Easy explanation in interviews:
+
+> “I built a full Databricks Lakehouse that processes raw sales data into business KPIs and visualized everything in Power BI using a professional analytics pipeline.”
+
+---
+
+## Future Improvements 💭
+
+* [ ] Real-time streaming ingestion
+* [ ] Incremental Delta updates
+* [ ] Data quality checks
+* [ ] CI/CD deployment
+* [ ] Cost optimization layer
+* [ ] ML forecasting on revenue
+
+---
+
+## License 📄
+
+MIT License
+
+---
+
+## Support 💬
+
+Have ideas or feedback?
+
+* Open an issue
+* Submit a PR
+* Or build on top of it
+
+---
+
+**Built to simulate real enterprise analytics systems.**
+Lakehouse thinking. BI execution. Career-level portfolio project 🚀
